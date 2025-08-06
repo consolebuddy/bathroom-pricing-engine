@@ -168,5 +168,4 @@ Each task object includes:
 
 ## 👤 Author
 
-Built for Donizo | Founding Data Engineer Technical Assessment  
-Made with ❤️ in Python
+Palen Pushkar
