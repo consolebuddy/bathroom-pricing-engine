@@ -1,0 +1,32 @@
+{
+    "remove old tiles": {
+        "accepted_count": 1,
+        "rejected_count": 0,
+        "total_margin": 27.75
+    },
+    "redo plumbing for shower": {
+        "accepted_count": 1,
+        "rejected_count": 0,
+        "total_margin": 43.5
+    },
+    "replace toilet": {
+        "accepted_count": 1,
+        "rejected_count": 0,
+        "total_margin": 36.0
+    },
+    "install vanity": {
+        "accepted_count": 1,
+        "rejected_count": 0,
+        "total_margin": 45.0
+    },
+    "repaint walls": {
+        "accepted_count": 1,
+        "rejected_count": 0,
+        "total_margin": 14.25
+    },
+    "lay new ceramic floor tiles": {
+        "accepted_count": 1,
+        "rejected_count": 0,
+        "total_margin": 33.75
+    }
+}

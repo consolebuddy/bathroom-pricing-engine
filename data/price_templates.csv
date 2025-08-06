@@ -1,0 +1,7 @@
+task_keyword,standard_task,default_hours,material_key,vat
+remove,remove old tiles,4,ceramic_tiles,0.10
+plumbing,redo plumbing for shower,6,plumbing_fittings,0.10
+replace,replace toilet,3,toilet,0.20
+install,install vanity,3,vanity,0.20
+paint,repaint walls,2,paint,0.20
+lay,lay new ceramic floor tiles,5,ceramic_tiles,0.10

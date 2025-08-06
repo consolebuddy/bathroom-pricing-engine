@@ -1,0 +1,67 @@
+{
+    "zone": "bathroom",
+    "city": "Marseille",
+    "tasks": [
+        {
+            "task": "remove old tiles",
+            "labor": 160.0,
+            "materials": 25.0,
+            "estimated_duration": "4h",
+            "vat_rate": 0.1,
+            "total_price": 231.25,
+            "margin": 27.75,
+            "confidence_score": 1.0
+        },
+        {
+            "task": "redo plumbing for shower",
+            "labor": 240.0,
+            "materials": 50.0,
+            "estimated_duration": "6h",
+            "vat_rate": 0.1,
+            "total_price": 362.5,
+            "margin": 43.5,
+            "confidence_score": 1.0
+        },
+        {
+            "task": "replace toilet",
+            "labor": 120.0,
+            "materials": 120.0,
+            "estimated_duration": "3h",
+            "vat_rate": 0.2,
+            "total_price": 324.0,
+            "margin": 36.0,
+            "confidence_score": 1.0
+        },
+        {
+            "task": "install vanity",
+            "labor": 120.0,
+            "materials": 180.0,
+            "estimated_duration": "3h",
+            "vat_rate": 0.2,
+            "total_price": 405.0,
+            "margin": 45.0,
+            "confidence_score": 1.0
+        },
+        {
+            "task": "repaint walls",
+            "labor": 80.0,
+            "materials": 15.0,
+            "estimated_duration": "2h",
+            "vat_rate": 0.2,
+            "total_price": 128.25,
+            "margin": 14.25,
+            "confidence_score": 1.0
+        },
+        {
+            "task": "lay new ceramic floor tiles",
+            "labor": 200.0,
+            "materials": 25.0,
+            "estimated_duration": "5h",
+            "vat_rate": 0.1,
+            "total_price": 281.25,
+            "margin": 33.75,
+            "confidence_score": 1.0
+        }
+    ],
+    "global_confidence": 1.0
+}
