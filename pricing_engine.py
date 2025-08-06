@@ -3,6 +3,10 @@ from pricing_logic.task_templates import match_tasks
 from pricing_logic.material_db import load_material_prices
 from pricing_logic.city_profile import get_city_profile
 from vector_memory import store_quote, search_similar
+import os
+
+
+print("🔍 Absolute Chroma Path:", os.path.abspath("chroma_store"))
 
 
 def calculate_margin(base_price):
@@ -84,11 +88,11 @@ if __name__ == "__main__":
 
     for task in quote["tasks"]:
         store_quote(
-        task=task["task"],
-        context=f"{quote['city']}, small bathroom, budget-conscious",
-        margin=task["margin"] / (task["labor"] + task["materials"]),  # Store margin rate
-        accepted=accepted
-    )
+            task=task["task"],
+            context=f"{quote['city']}, small bathroom, budget-conscious",
+            margin=task["margin"] / (task["labor"] + task["materials"]),  # margin rate
+            accepted=accepted
+        )
 
     print("✅ Feedback recorded and memory updated.")
 
