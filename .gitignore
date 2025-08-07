@@ -4,3 +4,4 @@ __pycache__/
 chroma_store/
 tests/chroma_store/
 tests/__pycache__/
+.idea/

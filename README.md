@@ -15,18 +15,19 @@ A modular Python-based pricing engine that parses messy renovation transcripts i
 │   ├── labor_calc.py               # Labor estimation logic
 │   ├── vat_rules.py                # VAT rate rules per task
 │   ├── task_templates.py           # Maps keywords to structured tasks
-│   ├── feedback_memory.py          # Feedback loop logic
+│   └── city_profile.py             # Multiplier logic for cities
+│
+├── vector_memory.py                # Vector memory using ChromaDB + embeddings
 │
 ├── data/
 │   ├── materials.json              # Material base prices
 │   ├── price_templates.csv         # Task templates and pricing rules
-│   └── feedback_memory.json        # Persisted memory from feedback
 │
 ├── output/
 │   └── sample_quote.json           # Auto-generated structured quote
 │
 ├── tests/
-│   └── test_logic.py               # Unit tests for all components
+│   └── test_vector_memory.py       # Vector search test using persistent DB
 │
 ├── README.md                       # You're here
 └── LICENSE                         # (Optional)
@@ -43,7 +44,7 @@ A modular Python-based pricing engine that parses messy renovation transcripts i
 3. **Labor Estimation**: Calculates time × hourly rate × city-based multiplier.
 4. **Material Pricing**: Fetches cost from `materials.json`, also city-adjusted.
 5. **VAT Logic**: Applies renovation-specific VAT per task.
-6. **Margin Logic**: Dynamically fetched from historical feedback using a memory loop.
+6. **Margin Logic**: Dynamically fetched from vector memory based on similar past accepted quotes.
 7. **Confidence Scoring**: Based on transcript clarity, task count, city info, and user history.
 8. **Quote Generation**: Structured JSON output grouped by zone and task.
 
@@ -52,7 +53,7 @@ A modular Python-based pricing engine that parses messy renovation transcripts i
 ## 💬 Example Transcript Input
 
 ```
-“Client wants to renovate a small 4m² bathroom. They’ll remove the old tiles, redo the plumbing for the shower, replace the toilet, install a vanity, repaint the walls, and lay new ceramic floor tiles. Budget-conscious. Located in Marseille.”
+Client wants to renovate a small 4m² bathroom. They’ll remove the old tiles, redo the plumbing for the shower, replace the toilet, install a vanity, repaint the walls, and lay new ceramic floor tiles. Budget-conscious. Located in Marseille.
 ```
 
 ---
@@ -65,17 +66,17 @@ A modular Python-based pricing engine that parses messy renovation transcripts i
   "city": "Marseille",
   "tasks": [
     {
-      "task": "remove old tiles",
-      "labor": 160.0,
-      "materials": 25.0,
-      "estimated_duration": "4h",
-      "vat_rate": 0.1,
-      "total_price": 229.25,
-      "margin": 27.75,
-      "confidence_score": 0.91
+      "task": "install vanity",
+      "labor": 120.0,
+      "materials": 180.0,
+      "estimated_duration": "3h",
+      "vat_rate": 0.2,
+      "total_price": 405.0,
+      "margin": 45.0,
+      "confidence_score": 1.0
     }
   ],
-  "global_confidence": 0.91
+  "global_confidence": 1.0
 }
 ```
 
@@ -89,35 +90,30 @@ A modular Python-based pricing engine that parses messy renovation transcripts i
 | Paris     | 1.2              | 1.1                 |  0.0             |
 | Lyon      | 1.1              | 1.0                 | +0.05            |
 
-City affects:
-- Labor & material cost
-- Confidence score
-- Can be extended to contractor history & supply chains
-
 ---
 
-## 🔁 Feedback Memory Loop
+## 🔁 Vector Feedback Memory
 
-- After each run, user inputs whether the quote was **accepted** or **rejected**
-- This updates `feedback_memory.json`
-- Margin rates are then **learned** over time per task
-- Example:
+- Tasks + context (e.g., city, room size, budget) are embedded into vectors
+- Stored and queried from `ChromaDB` persistently
+- Margins are recommended based on similar accepted quotes
+
+### Example Stored Vector Memory (Chroma)
 
 ```json
 {
-  "replace toilet": {
-    "accepted_count": 3,
-    "rejected_count": 1,
-    "total_margin": 50.0
-  }
+  "task": "install vanity",
+  "context": "marseille, small bathroom, budget-conscious",
+  "margin": 0.15,
+  "accepted": true
 }
 ```
 
-→ This will reduce/increase future margin on "replace toilet" based on past user decisions.
+Quotes are semantically queried using vector search with `sentence-transformers`.
 
 ---
 
-## ⚙️ How to Run
+## ✅ How to Run
 
 ```bash
 # Run the pricing engine
@@ -130,15 +126,18 @@ python pricing_engine.py
 Was the quote accepted? (y/n):
 ```
 
-Answering `y` or `n` will update the pricing memory for future improvements.
+If accepted, the quote will be embedded and stored in ChromaDB memory.
 
 ---
 
-## ✅ Tests
+## 🧪 Vector Memory Test
 
 ```bash
-python -m unittest tests/test_logic.py
+python tests/test_vector_memory.py
 ```
+
+- Confirms how many quotes are stored
+- Prints vector search results using raw text and helper function
 
 ---
 
@@ -162,7 +161,7 @@ Each task object includes:
 - Connect to **live supplier APIs** for real-time material pricing
 - Store **contractor performance history** by city & task
 - Build frontend for client-facing instant quote visualization
-- Deploy as a **microservice** (FastAPI + SQLite/PostgreSQL + Docker)
+- Deploy as a **FastAPI** microservice
 
 ---
 
